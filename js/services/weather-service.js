@@ -5,10 +5,10 @@ export const weatherService = {
 
 }
 
-var API_KEY = 'd1321269b0b84b84850b3bfb09e8e95b'
+var API_KEY = '96c0eb0e4e61dc74cd6d8eefb2384b94'
 
 function getTempByName(cityName) {
-      let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=eea6f959004b4f12abf36d71708faf7d`
+      let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${API_KEY}`
       return axios.get(url)
             .then((res) => {
                   return res.data.data[0];

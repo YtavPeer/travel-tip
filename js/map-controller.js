@@ -12,7 +12,7 @@ window.onload = () => {
 
     //this will load and render the location data to table from storage
     mapService.loadLocationFromStorage()
-    renderLoacationTable()
+    renderLocationTable()
 
     //this handle the my location button
     document.querySelector('.my-location-btn').addEventListener('click', (ev) => {
@@ -38,7 +38,7 @@ window.onload = () => {
                     .then(res => renderWeatherData(res))
 
                 mapService.addLocation(loc, searchKeyword, weatherDate);
-                renderLoacationTable()
+                renderLocationTable()
                 //handle change the location details area
                 document.querySelector('.location-details').innerText = searchKeyword
 
@@ -55,14 +55,12 @@ window.onload = () => {
             })
     })
 
-    const urlParams = new URLSearchParams(document.location.href);
-    console.log('url ',urlParams);
-    const latUrl = +getParameterByName(`lat`, urlParams) || 32.0852999;
-    const lngUrl = +getParameterByName(`lng`, urlParams) || 34.78176759999999;
+    const latUrl = +getParameterByName(`lat`) || 29.557669;
+    const lngUrl = +getParameterByName(`lng`) || 34.951925;
 
     initMap(latUrl, lngUrl)
         .then(() => {
-            addMarker({ lat, lng });
+            addMarker({ lat:latUrl, lng:lngUrl });
         })
         .catch(() => console.log('INIT MAP ERROR'));
 
@@ -91,11 +89,11 @@ function initMap(lat, lng) {
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
                 center: { lat, lng },
-                zoom: 11
+                zoom: 15,
             })
             console.log('Map!', gMap);
             // Create the initial InfoWindow.
-            const myLatlng = { lat: -25.363, lng: 131.044 };
+            // const myLatlng = { lat: -25.363, lng: 131.044 };
             let infoWindow = new google.maps.InfoWindow({
                 content: "Click the map to get Lat/Lng!",
                 position: myLatlng,
@@ -156,7 +154,7 @@ function _connectGoogleApi() {
     })
 }
 
-function renderLoacationTable() {
+function renderLocationTable() {
     mapService.getLocs()
         .then((res) => {
             console.log('locssss', res);
@@ -198,6 +196,6 @@ window.goToLocation = (locationId) => {
 //handle the delete buttom
 window.removeLocation = (locationid) => {
     mapService.removeFromLocationList(locationid)
-    renderLoacationTable()
+    renderLocationTable()
 }
 

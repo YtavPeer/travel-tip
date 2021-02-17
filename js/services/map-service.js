@@ -53,7 +53,7 @@ function removeFromLocationList(locationid) {
 
 function loadLocationFromStorage() {
     var dataFromDB = storageService.loadFromStorage(LOCATION_KEY);
-    locs = dataFromDB || [];
+    locs = (dataFromDB) ? dataFromDB : [];
 }
 
 
