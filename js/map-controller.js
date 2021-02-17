@@ -172,7 +172,7 @@ function renderLoacationTable() {
             })
             document.querySelector('.rows-table').innerHTML = htmls.join('');
         })
-}s
+}
 
 function renderWeatherData(data) {
     console.log('weather data is', data)
