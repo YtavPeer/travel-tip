@@ -5,7 +5,10 @@
     gap: 10px;
     align-items: center;
     justify-items: center;
-    grid-template-areas: "header input-location go my-location" "location-details location-details location-details copy-location" "whether-details map map" "location-table map map";
+    grid-template-areas: "header input-location go my-location"
+        "location-details location-details location-details copy-location"
+        "whether-details map map"
+        "location-table map map";
 }
 
 .travel-tip-header {

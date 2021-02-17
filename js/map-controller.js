@@ -9,6 +9,8 @@ mapService.getLocs()
 
 window.onload = () => {
 
+    renderLoacationTable()
+
     document.querySelector('.btn').addEventListener('click', (ev) => {
         console.log('Aha!', ev.target);
         panTo(35.6895, 139.6917);
@@ -81,18 +83,20 @@ function _connectGoogleApi() {
 }
 
 function renderLoacationTable() {
-    var locations = mapService.getLocs();
-    console.log('locssss', location);
 
-    var htmls = location.map((location) => {
-        /*html*/
-        `<tr>
-           <td>id: ${location.id} </td>
-           <td>lat: ${location.lat} </td>
-           <td>lng: ${location.lng} </td>
-         </tr>`
-    })
-
-
+    mapService.getLocs()
+        .then((res) => {
+            console.log('locssss', res);
+            var htmls = res.map((location) => {
+                return  /*html*/`<tr>
+               <td>id: ${location.id} </td>
+               <td>lat: ${location.lat} </td>
+               <td>lng: ${location.lng} </td>
+               <td><button onclick="goToLocation('${location.id}')">go<button> </td>
+               <td><button onclick="removeLocation('${location.id}')">delete<button> </td>
+             </tr>`
+            })
+            document.querySelector('.rows-table').innerHTML = htmls;
+        })
 }
 
