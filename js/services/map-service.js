@@ -1,8 +1,8 @@
-import { storageService } from './storage-service'
+import { storageService } from './storage-service.js'
 
 
 export const mapService = {
-    getLocs
+    getLocs,
 }
 
 

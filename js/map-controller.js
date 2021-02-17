@@ -6,6 +6,7 @@ console.log('Main!');
 mapService.getLocs()
     .then(locs => console.log('locs', locs))
 
+    
 window.onload = () => {
 
     document.querySelector('.btn').addEventListener('click', (ev) => {
