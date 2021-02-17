@@ -44,6 +44,22 @@ window.onload = () => {
             })
     })
 
+    //this will handle the copy location buttom
+    document.querySelector('.copy-location-btn').addEventListener('click', () => {
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('myParam');
+
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+    })
 
 
     initMap()
