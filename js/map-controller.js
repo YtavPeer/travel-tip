@@ -6,7 +6,7 @@ console.log('Main!');
 mapService.getLocs()
     .then(locs => console.log('locs', locs))
 
-    
+
 window.onload = () => {
 
     document.querySelector('.btn').addEventListener('click', (ev) => {
@@ -80,5 +80,19 @@ function _connectGoogleApi() {
     })
 }
 
+function renderLoacationTable() {
+    var locations = mapService.getLocs();
+    console.log('locssss', location);
 
+    var htmls = location.map((location) => {
+        /*html*/
+        `<tr>
+           <td>id: ${location.id} </td>
+           <td>lat: ${location.lat} </td>
+           <td>lng: ${location.lng} </td>
+         </tr>`
+    })
+
+
+}
 
