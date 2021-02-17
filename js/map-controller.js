@@ -46,30 +46,32 @@ window.onload = () => {
                 //handle change the location details area
                 document.querySelector('.location-details').innerText = searchKeyword
 
-
+                //this will handle the copy location buttom
+                document.querySelector('.copy-location-btn').addEventListener('click', () => {
+                    //need to save to clipboard
+                    var url = `https://ytavpeer.github.io/travel-tip/?lat=${loc.lat}&lng=${loc.lng}`
+                    // document.execCommand(url);
+                    // const myParam = urlParams.get('myParam');
+                    // const urlParams = new URLSearchParams(window.location.search);
+                    const elem = document.createElement('textarea');
+                    elem.value = url;
+                    document.body.appendChild(elem);
+                    elem.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(elem);
+                })
+                // document.execCommand('copy');
 
                 //add the query param to the url
                 // github link 
-                var url = `https://ytavpeer.github.io/travel-tip/`
 
-                function getParameterByName(name, url = window.location.href) {
-                    name = name.replace(/[\[\]]/g, '\\$&');
-                    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                        results = regex.exec(url);
-                    if (!results) return null;
-                    if (!results[2]) return '';
-                    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-                }
 
-                const urlParams = new URLSearchParams(window.location.search);
+
+
             })
     })
 
-    //this will handle the copy location buttom
-    document.querySelector('.copy-location-btn').addEventListener('click', () => {
-        //need to save to clipboard
-        const myParam = urlParams.get('myParam');
-    })
+
 
 
     initMap()
@@ -86,8 +88,19 @@ window.onload = () => {
             console.log('err!!!', err);
         })
 }
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+function initMap() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const lat = +getParameterByName(`lat`, urlParams)
+    const lng = +getParameterByName(`lng`, urlParams)
 
-function initMap(lat = 31.0455831, lng = 34.9120554) {
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
