@@ -1,0 +1,53 @@
+.main-container {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    grid-template-areas: "header input-location go my-location" "location-details location-details location-details copy-location" "whether-details map map" "location-table map map";
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+}
+
+.travel-tip-header {
+    grid-area: header;
+}
+
+.input-location {
+    grid-area: input-location;
+}
+
+.input-location {
+    grid-area: input-location;
+}
+
+.go-btn {
+    grid-area: go;
+}
+
+.my-location-btn {
+    grid-area: my-location;
+}
+
+.my-location-btn {
+    grid-area: my-location;
+}
+
+.location-details {
+    grid-area: location-details;
+}
+
+.copy-location-btn {
+    grid-area: copy-location;
+}
+
+.whether-details {
+    grid-area: whether-details;
+}
+
+.location-table-btn {
+    grid-area: location-table;
+}
+
+#map {
+    grid-area: map;
+}
