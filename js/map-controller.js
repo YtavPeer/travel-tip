@@ -1,4 +1,5 @@
 import { mapService } from './services/map-service.js'
+import { geoCodeService } from './services/geo-location-service.js'
 
 var gMap;
 console.log('Main!');
@@ -9,16 +10,45 @@ mapService.getLocs()
 
 window.onload = () => {
 
+    //this will load and render the location data to table from storage
+    mapService.loadLocationFromStorage()
     renderLoacationTable()
 
-    document.querySelector('.btn').addEventListener('click', (ev) => {
-        console.log('Aha!', ev.target);
-        panTo(35.6895, 139.6917);
+    //this handle the my location button
+    document.querySelector('.my-location-btn').addEventListener('click', (ev) => {
+        console.log('our location is!', ev.target);
+        var ourLocation = getPosition()
+            .then((res) => {
+                var lat = res.coords.latitude;
+                var lng = res.coords.longitude;
+                panTo(lat, lng);
+                addMarker({ lat, lng })
+            });
+        console.log(ourLocation);
     })
+
+    //this will handle the search by name input
+    document.querySelector('.go-btn').addEventListener('click', () => {
+        var searchKeyword = document.querySelector('.input-location').value;
+        //need to find the way to convert the keyword search to get lat ant lng
+        geoCodeService.getLocationByName(searchKeyword)
+            .then((loc) => {
+                console.log('Getting res from geo code service', loc);
+                panTo(loc.lat, loc.lng);
+                addMarker(loc)
+                mapService.addLocation(loc, searchKeyword);
+                renderLoacationTable()
+                //handle change the location details area
+                document.querySelector('.location-details').innerText = searchKeyword
+                //need to send data to get wheather api
+            })
+    })
+
+
 
     initMap()
         .then(() => {
-            addMarker({ lat: 32.0749831, lng: 34.9120554 });
+            addMarker({ lat: 31.0455831, lng: 34.9120554 });
         })
         .catch(() => console.log('INIT MAP ERROR'));
 
@@ -31,7 +61,7 @@ window.onload = () => {
         })
 }
 
-function initMap(lat = 32.0749831, lng = 34.9120554) {
+function initMap(lat = 31.0455831, lng = 34.9120554) {
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
@@ -39,7 +69,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
                 center: { lat, lng },
-                zoom: 15
+                zoom: 11
             })
             console.log('Map!', gMap);
         })
@@ -73,6 +103,7 @@ function _connectGoogleApi() {
     const API_KEY = 'AIzaSyAkOmFkBUn6IbejuXmCRMjE0KhuIiXbaY0'; //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
+
     elGoogleApi.async = true;
     document.body.append(elGoogleApi);
 
@@ -82,21 +113,39 @@ function _connectGoogleApi() {
     })
 }
 
-function renderLoacationTable() {
 
+
+
+function renderLoacationTable() {
     mapService.getLocs()
         .then((res) => {
             console.log('locssss', res);
             var htmls = res.map((location) => {
                 return  /*html*/`<tr>
                <td>id: ${location.id} </td>
+               <td>name: ${location.name} </td>
                <td>lat: ${location.lat} </td>
                <td>lng: ${location.lng} </td>
-               <td><button onclick="goToLocation('${location.id}')">go<button> </td>
-               <td><button onclick="removeLocation('${location.id}')">delete<button> </td>
+               <td><button class='go-btn' onclick="goToLocation('${location.id}')">go</button> </td>
+               <td><button class='remove-btn' onclick="removeLocation('${location.id}')">delete</button> </td>
              </tr>`
             })
-            document.querySelector('.rows-table').innerHTML = htmls;
+            document.querySelector('.rows-table').innerHTML = htmls.join('');
         })
+}
+
+//handle the go buttom
+window.goToLocation = (locationId) => {
+    var currLoc = mapService.getLocById(locationId);
+    console.log('currLoc', currLoc);
+    panTo(currLoc.lat, currLoc.lng)
+    addMarker(currLoc);
+}
+
+
+//handle the delete buttom
+window.removeLocation = (locationid) => {
+    mapService.removeFromLocationList(locationid)
+    renderLoacationTable()
 }
 

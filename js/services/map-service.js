@@ -1,17 +1,18 @@
 import { storageService } from './storage-service.js'
 
+var LOCATION_KEY = 'locationDB'
+
 
 export const mapService = {
     getLocs,
+    addLocation,
+    getLocById,
+    removeFromLocationList,
+    loadLocationFromStorage,
 }
 
 
-var locs = [
-    { id: 1, lat: 11.22, lng: 26.16, weather: 57, createdAt: 1833, updateAt: 1644 },
-    { id: 2, lat: 13.56, lng: 23.14, weather: 35, createdAt: 1433, updateAt: 1244 },
-    { id: 3, lat: 17.46, lng: 22.17, weather: 23, createdAt: 1733, updateAt: 1644 },
-    { id: 4, lat: 16.22, lng: 29.13, weather: 51, createdAt: 1433, updateAt: 1444 }
-]
+var locs;
 
 function getLocs() {
     return new Promise((resolve, reject) => {
@@ -19,6 +20,40 @@ function getLocs() {
             resolve(locs);
         }, 2000)
     });
+}
+
+//funtion that add location and save to storage
+function addLocation(loc, newLocationName) {
+    var newLocation = {
+        id: locs[locs.length-1].id + 1,
+        name: newLocationName,
+        lat: loc.lat,
+        lng: loc.lng,
+        weather: undefined,
+        createdAt: Date.now(),
+        updateAt: undefined
+    }
+    locs.push(newLocation)
+    storageService.saveToStorage(LOCATION_KEY, locs)
+}
+
+
+function getLocById(locationId) {
+    var currLoc = locs.find(value => value.id === +locationId)
+    var locData = { lat: currLoc.lat, lng: currLoc.lng };
+    return locData
+}
+
+function removeFromLocationList(locationid) {
+    var idx = locs.findIndex(value => value.id === +locationid)
+    locs.splice(idx, 1);
+    storageService.saveToStorage(LOCATION_KEY, locs);
+    console.log('location deleted');
+}
+
+function loadLocationFromStorage() {
+    var dataFromDB = storageService.loadFromStorage(LOCATION_KEY);
+    locs = (dataFromDB) ? dataFromDB : [];
 }
 
 
