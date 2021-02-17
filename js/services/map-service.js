@@ -23,13 +23,13 @@ function getLocs() {
 }
 
 //funtion that add location and save to storage
-function addLocation(loc, newLocationName) {
+function addLocation(loc, newLocationName, weatherDate) {
     var newLocation = {
-        id: locs[locs.length-1].id + 1,
+        id: locs[locs.length - 1].id + 1,
         name: newLocationName,
         lat: loc.lat,
         lng: loc.lng,
-        weather: undefined,
+        weather: weatherDate,
         createdAt: Date.now(),
         updateAt: undefined
     }

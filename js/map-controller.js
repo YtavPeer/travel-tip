@@ -37,7 +37,11 @@ window.onload = () => {
                 console.log('Getting res from geo code service', loc);
                 panTo(loc.lat, loc.lng);
                 addMarker(loc)
-                mapService.addLocation(loc, searchKeyword);
+                //need to send data to get wheather api
+                var weatherDate = weatherService.getTempByName(searchKeyword)
+                    .then(res => renderWeatherData(res))
+
+                mapService.addLocation(loc, searchKeyword, weatherDate);
                 renderLoacationTable()
                 //handle change the location details area
                 document.querySelector('.location-details').innerText = searchKeyword
@@ -55,9 +59,6 @@ window.onload = () => {
                     return decodeURIComponent(results[2].replace(/\+/g, ' '));
                 }
 
-                //need to send data to get wheather api
-                weatherService.getTempByName(searchKeyword)
-                    .then(res => renderWeatherData(res))
             })
     })
 
@@ -165,6 +166,7 @@ function renderWeatherData(data) {
                   <td>description: ${data.weather.description} </td>
                 </tr>`
     document.querySelector('.whether-table').innerHTML = htmls;
+    return data;
 }
 
 //handle the go buttom
