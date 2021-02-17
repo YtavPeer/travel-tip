@@ -2,7 +2,7 @@ import { storageService } from './storage-service'
 
 
 export const mapService = {
-    getLocs
+    getLocs,
 }
 
 
