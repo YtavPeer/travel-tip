@@ -1,11 +1,11 @@
 .main-container {
     display: grid;
-    grid-template-columns: repeat(3, 200px);
-    grid-template-rows: repeat(3, 200px);
-    grid-template-areas: "header input-location go my-location" "location-details location-details location-details copy-location" "whether-details map map" "location-table map map";
+    grid-template-rows: 100px, 100px, 100px, 100px;
+    grid-template-columns: 100px, 100px, 100px, 100px;
     gap: 10px;
     align-items: center;
     justify-items: center;
+    grid-template-areas: "header input-location go my-location" "location-details location-details location-details copy-location" "whether-details map map" "location-table map map";
 }
 
 .travel-tip-header {
@@ -16,16 +16,8 @@
     grid-area: input-location;
 }
 
-.input-location {
-    grid-area: input-location;
-}
-
 .go-btn {
     grid-area: go;
-}
-
-.my-location-btn {
-    grid-area: my-location;
 }
 
 .my-location-btn {
