@@ -46,10 +46,12 @@ window.onload = () => {
                 //handle change the location details area
                 document.querySelector('.location-details').innerText = searchKeyword
 
+
+
                 //add the query param to the url
                 // github link 
-                var url = `https://ytavpeer.github.io/travel-tip/?lat=3.14&lng=1.63`
-                const urlParams = new URLSearchParams(window.location.search);
+                var url = `https://ytavpeer.github.io/travel-tip/`
+
                 function getParameterByName(name, url = window.location.href) {
                     name = name.replace(/[\[\]]/g, '\\$&');
                     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -59,6 +61,7 @@ window.onload = () => {
                     return decodeURIComponent(results[2].replace(/\+/g, ' '));
                 }
 
+                const urlParams = new URLSearchParams(window.location.search);
             })
     })
 
@@ -109,7 +112,9 @@ function initMap(lat = 31.0455831, lng = 34.9120554) {
                 // Create a new InfoWindow.
                 infoWindow = new google.maps.InfoWindow({
                     position: mapsMouseEvent.latLng,
-                });
+                }
+                );
+                addMarker(infoWindow.position)
                 infoWindow.setContent(
                     JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
                 );
@@ -122,7 +127,7 @@ function addMarker(loc) {
     var marker = new google.maps.Marker({
         position: loc,
         map: gMap,
-        title: 'Hello World!'
+        title: 'new defulat location'
     });
     return marker;
 }
