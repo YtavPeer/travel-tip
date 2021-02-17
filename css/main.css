@@ -1,15 +1,21 @@
 .main-container {
     display: grid;
     width: 800px;
-    grid-template-rows: repeat(4,200px);
-    grid-template-columns: repeat(4,200px);
-    gap: 10px;
+    border: 1px solid black;
+    grid-template-rows: repeat(4, 200px);
+    grid-template-columns: repeat(4, 200px);
+    /* gap: 10px; */
     align-items: center;
     justify-items: center;
     grid-template-areas: "header input-location go my-location" 
-                         "location-details location-details location-details copy-location" 
-                         "whether-details map map map" 
-                        "location-table map map map";
+    "location-details location-details location-details copy-location" 
+    "whether-details whether-details map map"
+     "location-table location-table map map";
+}
+
+.btn {
+    background-color: gray;
+    color: aliceblue;
 }
 
 .travel-tip-header {
