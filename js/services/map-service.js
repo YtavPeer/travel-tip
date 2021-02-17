@@ -12,7 +12,7 @@ export const mapService = {
 }
 
 
-var locs = [];
+var locs;
 
 function getLocs() {
     return new Promise((resolve, reject) => {

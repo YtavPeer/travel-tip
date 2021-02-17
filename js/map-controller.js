@@ -70,13 +70,15 @@ window.onload = () => {
 
             })
     })
+    const urlParams = new URLSearchParams(window.location.search);
+    var latUrl = +getParameterByName(`lat`, urlParams) || 32.0852999
+    var lngUrl = +getParameterByName(`lng`, urlParams) || 34.78176759999999;
 
 
 
-
-    initMap()
+    initMap(latUrl, lngUrl)
         .then(() => {
-            addMarker({ lat: 31.0455831, lng: 34.9120554 });
+            addMarker({ lat, lng });
         })
         .catch(() => console.log('INIT MAP ERROR'));
 
@@ -96,10 +98,8 @@ function getParameterByName(name, url = window.location.href) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-function initMap() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const lat = +getParameterByName(`lat`, urlParams)
-    const lng = +getParameterByName(`lng`, urlParams)
+function initMap(lat, lng) {
+
 
     console.log('InitMap');
     return _connectGoogleApi()
