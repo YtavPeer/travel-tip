@@ -1,4 +1,6 @@
 .main-container {
+    background-color: lightsalmon;
+    padding: 10px;
     display: grid;
     width: 800px;
     border: 1px solid black;
@@ -46,7 +48,7 @@
     grid-area: whether-details;
 }
 
-.location-table-btn {
+.location-table {
     grid-area: location-table;
 }
 
