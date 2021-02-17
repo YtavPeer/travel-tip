@@ -1,5 +1,6 @@
 import { mapService } from './services/map-service.js'
 import { geoCodeService } from './services/geo-location-service.js'
+import { weatherService } from './services/weather-service.js'
 
 var gMap;
 console.log('Main!');
@@ -36,29 +37,35 @@ window.onload = () => {
                 console.log('Getting res from geo code service', loc);
                 panTo(loc.lat, loc.lng);
                 addMarker(loc)
-                mapService.addLocation(loc, searchKeyword);
+                //need to send data to get wheather api
+                var weatherDate = weatherService.getTempByName(searchKeyword)
+                    .then(res => renderWeatherData(res))
+
+                mapService.addLocation(loc, searchKeyword, weatherDate);
                 renderLoacationTable()
                 //handle change the location details area
                 document.querySelector('.location-details').innerText = searchKeyword
-                //need to send data to get wheather api
+
+                //add the query param to the url
+                // github link 
+                var url = `https://ytavpeer.github.io/travel-tip/?lat=3.14&lng=1.63`
+                const urlParams = new URLSearchParams(window.location.search);
+                function getParameterByName(name, url = window.location.href) {
+                    name = name.replace(/[\[\]]/g, '\\$&');
+                    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+                }
+
             })
     })
 
     //this will handle the copy location buttom
     document.querySelector('.copy-location-btn').addEventListener('click', () => {
-
-        const urlParams = new URLSearchParams(window.location.search);
+        //need to save to clipboard
         const myParam = urlParams.get('myParam');
-
-        function getParameterByName(name, url = window.location.href) {
-            name = name.replace(/[\[\]]/g, '\\$&');
-            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
-
     })
 
 
@@ -88,6 +95,26 @@ function initMap(lat = 31.0455831, lng = 34.9120554) {
                 zoom: 11
             })
             console.log('Map!', gMap);
+            // Create the initial InfoWindow.
+            const myLatlng = { lat: -25.363, lng: 131.044 };
+            let infoWindow = new google.maps.InfoWindow({
+                content: "Click the map to get Lat/Lng!",
+                position: myLatlng,
+            });
+            infoWindow.open(gMap);
+            // Configure the click listener.
+            gMap.addListener("click", (mapsMouseEvent) => {
+                // Close the current InfoWindow.
+                infoWindow.close();
+                // Create a new InfoWindow.
+                infoWindow = new google.maps.InfoWindow({
+                    position: mapsMouseEvent.latLng,
+                });
+                infoWindow.setContent(
+                    JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+                );
+                infoWindow.open(gMap);
+            });
         })
 }
 
@@ -148,6 +175,18 @@ function renderLoacationTable() {
             })
             document.querySelector('.rows-table').innerHTML = htmls.join('');
         })
+}
+
+function renderWeatherData(data) {
+    console.log('weather data is', data)
+    var htmls = /*html*/`<tr>
+                  <td>date: ${data.datetime} </td>
+                  <td>max temp: ${data.app_max_temp} </td>
+                  <td>min temp: ${data.app_min_temp} </td>
+                  <td>description: ${data.weather.description} </td>
+                </tr>`
+    document.querySelector('.whether-table').innerHTML = htmls;
+    return data;
 }
 
 //handle the go buttom
