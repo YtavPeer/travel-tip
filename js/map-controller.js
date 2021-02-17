@@ -3,7 +3,6 @@ import { geoCodeService } from './services/geo-location-service.js'
 import { weatherService } from './services/weather-service.js'
 
 var gMap;
-console.log('Main!');
 
 mapService.getLocs()
     .then(locs => console.log('locs', locs))
@@ -17,7 +16,6 @@ window.onload = () => {
 
     //this handle the my location button
     document.querySelector('.my-location-btn').addEventListener('click', (ev) => {
-        console.log('our location is!', ev.target);
         var ourLocation = getPosition()
             .then((res) => {
                 var lat = res.coords.latitude;
@@ -25,13 +23,11 @@ window.onload = () => {
                 panTo(lat, lng);
                 addMarker({ lat, lng })
             });
-        console.log(ourLocation);
     })
 
     //this will handle the search by name input
     document.querySelector('.go-btn').addEventListener('click', () => {
         var searchKeyword = document.querySelector('.input-location').value;
-        //need to find the way to convert the keyword search to get lat ant lng
         geoCodeService.getLocationByName(searchKeyword)
             .then((loc) => {
                 console.log('Getting res from geo code service', loc);
@@ -48,11 +44,7 @@ window.onload = () => {
 
                 //this will handle the copy location buttom
                 document.querySelector('.copy-location-btn').addEventListener('click', () => {
-                    //need to save to clipboard
                     var url = `https://ytavpeer.github.io/travel-tip/?lat=${loc.lat}&lng=${loc.lng}`
-                    // document.execCommand(url);
-                    // const myParam = urlParams.get('myParam');
-                    // const urlParams = new URLSearchParams(window.location.search);
                     const elem = document.createElement('textarea');
                     elem.value = url;
                     document.body.appendChild(elem);
@@ -60,21 +52,13 @@ window.onload = () => {
                     document.execCommand('copy');
                     document.body.removeChild(elem);
                 })
-                // document.execCommand('copy');
-
-                //add the query param to the url
-                // github link 
-
-
-
-
             })
     })
-    const urlParams = new URLSearchParams(window.location.search);
-    var latUrl = +getParameterByName(`lat`, urlParams) || 32.0852999
-    var lngUrl = +getParameterByName(`lng`, urlParams) || 34.78176759999999;
 
-
+    const urlParams = new URLSearchParams(document.location.href);
+    console.log('url ',urlParams);
+    const latUrl = +getParameterByName(`lat`, urlParams) || 32.0852999;
+    const lngUrl = +getParameterByName(`lng`, urlParams) || 34.78176759999999;
 
     initMap(latUrl, lngUrl)
         .then(() => {
@@ -90,6 +74,7 @@ window.onload = () => {
             console.log('err!!!', err);
         })
 }
+
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -98,10 +83,8 @@ function getParameterByName(name, url = window.location.href) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
 function initMap(lat, lng) {
-
-
-    console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
             console.log('google available');
@@ -158,7 +141,6 @@ function getPosition() {
     })
 }
 
-
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
     const API_KEY = 'AIzaSyAkOmFkBUn6IbejuXmCRMjE0KhuIiXbaY0'; //TODO: Enter your API Key
@@ -173,9 +155,6 @@ function _connectGoogleApi() {
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
-
-
-
 
 function renderLoacationTable() {
     mapService.getLocs()
@@ -193,7 +172,7 @@ function renderLoacationTable() {
             })
             document.querySelector('.rows-table').innerHTML = htmls.join('');
         })
-}
+}s
 
 function renderWeatherData(data) {
     console.log('weather data is', data)
