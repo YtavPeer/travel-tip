@@ -1,4 +1,4 @@
-body{
+body {
     margin-top: 50px;
 }
 
@@ -13,7 +13,7 @@ body{
     grid-template-columns: repeat(4, 200px);
     align-items: center;
     justify-items: center;
-    grid-template-areas: "header input-location go my-location" "location-details location-details location-details copy-location" "whether-details whether-details map map" "location-table location-table map map";
+    grid-template-areas: "header input-location go my-location""location-details location-details location-details copy-location""whether-details whether-details map map""location-table location-table map map";
 }
 
 .btn {
@@ -22,6 +22,7 @@ body{
     height: 50px;
     width: 100px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .travel-tip-header {
@@ -40,6 +41,11 @@ body{
 .go-btn {
     grid-area: go;
     justify-self: flex-end;
+    cursor: pointer;
+}
+
+.remove-btn {
+    cursor: pointer;
 }
 
 .my-location-btn {
